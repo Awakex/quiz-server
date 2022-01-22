@@ -1,6 +1,8 @@
 const history = [];
 let onlineUsers = [];
 
+let counter = 0;
+
 module.exports = (io, socket) => {
     let userId = socket?.handshake?.query?.userId;
     if (!userId) {
@@ -17,11 +19,12 @@ module.exports = (io, socket) => {
         if (userIndex === -1) {
             onlineUsers.push({ id: userId });
         }
-
+        console.log("online", counter++);
         io.sockets.emit("update:usersOnline", onlineUsers.length);
     };
 
     const setUserOffline = () => {
+        console.log("offline", counter++);
         onlineUsers = onlineUsers.filter((user) => user.id !== userId);
         io.sockets.emit("update:usersOnline", onlineUsers.length);
     };
